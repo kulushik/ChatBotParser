@@ -1,4 +1,8 @@
 Config.py
 TgBot.py
 *.log
+<<<<<<< HEAD
 __pycache__/
+=======
+__pycache__/
+>>>>>>> a0f9a11b22a1cce7d594266182adaa40181896f0
