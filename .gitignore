@@ -1,4 +1,4 @@
 Config.py
 TgBot.py
 *.log
-__pycache__/ioo
+__pycache__/
