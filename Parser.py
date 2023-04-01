@@ -33,7 +33,7 @@ def get_schedule_in_json():
         
         even_odd_week_now = content.find('div', class_='alert-info').find(string=re.compile('неделя')).find_next().text # четная/нечетна
 
-        if even_odd_week_now == 'четная': # --------------Нужно будет поменять на "==" если исправят ошибку в коде расписания-------------------------
+        if even_odd_week_now == 'четная': # --------------Нужно будет поменять на "!=" если исправят ошибку в коде расписания-------------------------
             next_even_odd_week = 'class-even-week'
         else:
             next_even_odd_week = 'class-odd-week'
@@ -41,44 +41,34 @@ def get_schedule_in_json():
         day_dict = {}
         days_of_the_week = content.find_all('h3', class_='day-heading') # Список с днями и датами
         for day in days_of_the_week:
-            name_day = day.text
+            name_date_day = day.text # Дата и название дня недели
+            name_day = name_date_day.split(',')[0].strip() # Название дня недели
+            date = name_date_day.split(',')[1].strip() # Дата
             
-            pair_dict = {}
-            # list_pair = []
+            list_subject = [] # Список предметов для конкретного дня
             pairs = day.find_next().find_all('div', class_='class-line-item') # Список пар разбитых по времени
             for pair in pairs:
-                pair_start_time = pair.find('div', class_='class-time').text
+                pair_start_time = pair.find('div', class_='class-time').text # Время начала пары
 
                 # subject_dict = {}
-                list_subject = []
                 for subject in pair.find_all('div', class_='class-tail'): # Список предметов для конкретного времени
                     if next_even_odd_week in subject['class'] or subject.text == 'свободно':
                         continue
                     else:
                         list_subject.append({
+                            'time':pair_start_time,
                             'name_pair':subject.find('div', class_='class-pred').text,
                             'audience':subject.find('div', class_='class-aud').text,
                             'info':subject.find('div', class_='class-info').text.strip()
                             })
                 
-                # with open('dict.json', 'w') as f:
-                #     json.dump(list_subject, f, indent=4, ensure_ascii=False)
+            day_dict[name_day] = {
+                'date':date,
+                'pairs':list_subject
+                }
 
-                if not list_subject:
-                    continue
-
-                pair_dict[pair_start_time] = list_subject
-            
-            # with open('dict.json', 'w') as f:
-            #     json.dump(list_pair, f, indent=4, ensure_ascii=False)
-
-            day_dict[name_day] = pair_dict
-            # break
-
-        with open(f'dict{i+1}.json', 'w') as f:
-            json.dump(day_dict, f, indent=4) # , ensure_ascii=False
-
-        break
+        with open(f'{even_odd_week_now}.json', 'w') as f:
+            json.dump(day_dict, f, indent=4, ensure_ascii=False) # 
 
 
 if __name__ == '__main__':
