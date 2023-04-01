@@ -76,7 +76,7 @@ def get_schedule_in_json():
             # break
 
         with open(f'dict{i+1}.json', 'w') as f:
-            json.dump(day_dict, f, indent=4, ensure_ascii=False)
+            json.dump(day_dict, f, indent=4) # , ensure_ascii=False
 
         break
 
