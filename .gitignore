@@ -1,5 +1,4 @@
 Config.py
-TgBot.py
 *.log
 __pycache__/
 *.json
