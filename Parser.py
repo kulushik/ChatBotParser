@@ -67,5 +67,22 @@ def get_schedule_in_json():
             json.dump(day_dict, f, indent=4, ensure_ascii=False)
 
 
+def load_json(week: str, name_day: str = ''):
+    with open(f'{week}.json', encoding='utf-8') as file:
+        dict = json.load(file)
+    
+    list = []
+    for day in dict.items(): # Перебор дней
+        list.append([])
+        if name_day in day[0]:
+            list[-1].append(f'<i><b>{day[0]}, {day[1]["date"]}</b></i>')
+            for pair in day[1]['pairs']:
+                list[-1].append(f'{pair["time"]}\n{pair["name_pair"]}\n<u>{pair["audience"]}</u>\n{pair["info"]}')
+        else:
+            list.pop()
+    
+    return list
+
+
 if __name__ == '__main__':
     get_schedule_in_json()
