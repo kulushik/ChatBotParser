@@ -1,4 +1,4 @@
-from Parser import get_schedule
+from Parser import get_schedule_in_json, load_json
 import Config
 import logging
 from aiogram import Bot, Dispatcher, executor, types
@@ -59,15 +59,15 @@ async def help(message: types.Message):
 # Обрабатываем команду /day
 async def day(message: types.Message):
     if '⠀' in message.text:
-        cur_week = False
+        week = 'next_week'
         message.text = message.text.replace('⠀', '')
     else:
-        cur_week = True
+        week = 'current_week'
 
     if message.text.lower() in ['пн', 'вт', 'ср', 'чт', 'пт', 'сб']:
-        day = get_schedule(cur_week, short_weekday_names[message.text.lower()])
+        day = load_json(week, short_weekday_names[message.text.lower()])
     else:
-        day = get_schedule(cur_week, day=weekday_names[date.today().weekday()])
+        day = load_json(week, weekday_names[date.today().weekday()])
 
     if day:
         for d in day[0]:
@@ -80,12 +80,12 @@ async def day(message: types.Message):
 # Обрабатываем команду /week
 async def week(message: types.Message):
     if '⠀' in message.text:
-        cur_week = False
+        week = 'next_week'
     else:
-        cur_week = True
+        week = 'current_week'
 
-    week = get_schedule(cur_week)
-    for row in week:
+    full_week = load_json(week)
+    for row in full_week:
         block = ''
         for item in row:
             block += item+'\n'+'-'*20+'\n'

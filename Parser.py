@@ -10,8 +10,7 @@ def get_page(url):
     """
     try:
         response = requests.get(url)
-    except Exception as e:
-        #print(e)
+    except:
         print('Возможно стоить проверить инет!')
         raise
 
@@ -26,16 +25,16 @@ def get_schedule_in_json():
     today = datetime.date.today()
     next_monday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
 
-    urls = ['https://www.istu.edu/schedule/?group=464771', f'https://www.istu.edu/schedule/?group=464771&date={str(next_monday)}']
+    urls = {'current_week':'https://www.istu.edu/schedule/?group=464771', 'next_week':f'https://www.istu.edu/schedule/?group=464771&date={str(next_monday)}'}
 
-    for url in urls:
+    for key, url in urls.items():
         html_page = get_page(url)
         
         content = html_page.find('div', class_='content')
         
-        even_odd_week_now = content.find('div', class_='alert-info').find(string=re.compile('неделя')).find_next().text # четная/нечетна
-
-        if even_odd_week_now == 'четная': # --------------Нужно будет поменять на "!=" если исправят ошибку в коде расписания-------------------------
+        # четная/нечетна
+        # --------------Нужно будет поменять на "!=" если исправят ошибку в коде расписания-------------------------
+        if content.find('div', class_='alert-info').find(string=re.compile('неделя')).find_next().text == 'четная':
             next_even_odd_week = 'class-even-week'
         else:
             next_even_odd_week = 'class-odd-week'
@@ -66,24 +65,25 @@ def get_schedule_in_json():
                 'pairs':list_subject
                 }
 
-        with open(f'{even_odd_week_now}.json', 'w', encoding='utf-8') as f:
+        with open(f'{key}.json', 'w', encoding='utf-8') as f:
             json.dump(day_dict, f, indent=4, ensure_ascii=False)
 
 
 def load_json(week: str, name_day: str = ''):
     """
-    week: четная/нечетная неделя
-    name_day: название дня недели
+    week: название json файла с расписанием "current_week"/"next_week"
+    name_day: название дня недели (необязательный параметр)
     """
+
     with open(f'{week}.json', encoding='utf-8') as file:
         dict = json.load(file)
     
     list = []
-    for day in dict.items(): # Перебор дней
+    for day, other in dict.items(): # Перебор дней
         list.append([])
-        if name_day in day[0]:
-            list[-1].append(f'<i><b>{day[0]}, {day[1]["date"]}</b></i>')
-            for pair in day[1]['pairs']:
+        if name_day in day:
+            list[-1].append(f'<i><b>{day}, {other["date"]}</b></i>')
+            for pair in other['pairs']:
                 list[-1].append(f'{pair["time"]}\n{pair["name_pair"]}\n<u>{pair["audience"]}</u>\n{pair["info"]}')
         else:
             list.pop()
@@ -91,5 +91,5 @@ def load_json(week: str, name_day: str = ''):
     return list
 
 
-if __name__ == '__main__':
-    get_schedule_in_json()
+# if __name__ == '__main__':
+    # get_schedule_in_json()
