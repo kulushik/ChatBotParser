@@ -5,6 +5,9 @@ import re
 import json
 
 def get_page(url):
+    """
+    url: ссылка на на страницу с расписанием
+    """
     try:
         response = requests.get(url)
     except Exception as e:
@@ -68,6 +71,10 @@ def get_schedule_in_json():
 
 
 def load_json(week: str, name_day: str = ''):
+    """
+    week: четная/нечетная неделя
+    name_day: название дня недели
+    """
     with open(f'{week}.json', encoding='utf-8') as file:
         dict = json.load(file)
     
