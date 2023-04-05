@@ -127,18 +127,16 @@ async def echo(message: types.Message):
     with open(r'img\desktop.png', 'rb') as photo:
         await message.answer_photo(types.InputFile(photo), 'Зачем ты сюда пишешь? Держи обои на рабочий стол')
 
-async def print_async(text: str):
-    print(text)
 
 if __name__ == '__main__':
     # Создание планировщика
     scheduler = AsyncIOScheduler()
-    # Планирование сообщения каждый день в установленное время
-    # send_time = datetime.combine(datetime.today(), time(hour=10, minute=0)) # каждый день в 10:00
-    # scheduler.add_job(send_message, 'date', run_date=send_time, args=[chat_id, text])
-
-    # scheduler.add_job(print_async, 'interval', minutes=1, args=['Ну тип асинхронно'])
+    # Установка начального времени
+    start_time = datetime.combine(date(2023, 4, 6), time(hour=0, minute=0))
+    # Установка параметров планировщика
+    scheduler.add_job(get_schedule_in_json, 'interval', hours=4, start_date=start_time)
     # Запуск планировщика
-    # scheduler.start()
+    scheduler.start()
 
+    # Запуск бота
     executor.start_polling(dp, skip_updates=False)
