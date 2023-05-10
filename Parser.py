@@ -9,7 +9,14 @@ def get_page(url):
     url: ссылка на на страницу с расписанием
     """
     try:
-        response = requests.get(url)
+        headers = {
+            'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'Accept-Encoding':'gzip, deflate, br',
+            'Accept-Language':'ru-RU,ru;q=0.9',
+            'Connection':'keep-alive',
+            'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'
+        }
+        response = requests.get(url, headers=headers)
     except:
         print('Возможно стоить проверить инет!')
         raise
@@ -25,7 +32,7 @@ def get_schedule_in_json():
     today = datetime.date.today()
     next_monday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
 
-    urls = {'current_week':'https://www.istu.edu/schedule/?group=464771', 'next_week':f'https://www.istu.edu/schedule/?group=464771&date={str(next_monday)}'}
+    urls = {'current_week':'http://www.istu.edu/schedule/?group=464771', 'next_week':f'http://www.istu.edu/schedule/?group=464771&date={str(next_monday)}'}
 
     for key, url in urls.items():
         html_page = get_page(url)
