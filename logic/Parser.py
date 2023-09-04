@@ -32,7 +32,7 @@ def get_schedule_in_json():
     today = datetime.date.today()
     next_monday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
 
-    urls = {'current_week':'http://www.istu.edu/schedule/?group=464771', 'next_week':f'http://www.istu.edu/schedule/?group=464771&date={str(next_monday)}'}
+    urls = {'current_week':'http://www.istu.edu/schedule/?group=466716', 'next_week':f'http://www.istu.edu/schedule/?group=466716&date={str(next_monday)}'}
 
     for key, url in urls.items():
         html_page = get_page(url)
@@ -72,7 +72,7 @@ def get_schedule_in_json():
                 'pairs':list_subject
                 }
 
-        with open(f'{key}.json', 'w', encoding='utf-8') as f:
+        with open(f'data\\{key}.json', 'w', encoding='utf-8') as f:
             json.dump(day_dict, f, indent=4, ensure_ascii=False)
 
 
@@ -82,7 +82,7 @@ def load_json(week: str, name_day: str = ''):
     name_day: название дня недели (необязательный параметр)
     """
 
-    with open(f'{week}.json', encoding='utf-8') as file:
+    with open(f'data\\{week}.json', encoding='utf-8') as file:
         dict = json.load(file)
     
     list = []
