@@ -47,7 +47,7 @@ async def week_block_messages(callback: types.CallbackQuery):
 async def choice_settings(callback: types.CallbackQuery, callback_data: SettingsCallbackData):
     try:
         set_settings(callback.from_user.id, callback_data.category, callback_data.choice)
-        await callback.answer('👌', show_alert=True)
+        await callback.answer('👌')
     except:
         await callback.answer('Что-то пошло не так, воспользуйтесь командой /bagreport', show_alert=True)
 
@@ -57,13 +57,13 @@ async def change_shedule(callback: types.CallbackQuery, callback_data: ChangeShe
     callback.answer()
     kb = None
     if callback_data.week == '':
-        kb = InlineKeyboard.create_inline_kb(2, '🔙', **{ChangeSheduleCallbackData(change=callback_data.change, week='current_week', day='').pack():'Текущая неделя', ChangeSheduleCallbackData(change=callback_data.change, week='next_week', day='').pack():'Следующая неделя'})
+        kb = InlineKeyboard.create_inline_kb(2, **{ChangeSheduleCallbackData(change=callback_data.change, week='current_week', day='').pack():'Текущая неделя', ChangeSheduleCallbackData(change=callback_data.change, week='next_week', day='').pack():'Следующая неделя'}, exit='🔚')
     elif callback_data.day == '':
         if callback_data.change == 'edit' or callback_data.change == 'delete':
             days = check_day(callback_data.week)
         if callback_data.change == 'add':
             days = check_day(callback_data.week, True)
-        kb = InlineKeyboard.create_inline_kb(len(days), '🔙', **{ChangeSheduleCallbackData(change=callback_data.change, week=callback_data.week, day=day).pack():day for day in days})
+        kb = InlineKeyboard.create_inline_kb(len(days), **{ChangeSheduleCallbackData(change=callback_data.change, week=callback_data.week, day=day).pack():day for day in days}, exit='🔚')
     else:
         pass
 

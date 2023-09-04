@@ -36,7 +36,7 @@ async def main():
 
 if __name__ == '__main__':
     # Создание планировщика
-    scheduler = AsyncIOScheduler()
+    scheduler = AsyncIOScheduler(timezone='Asia/Irkutsk')
     # Установка начального времени
     interval = 4
     date_time = datetime.now()

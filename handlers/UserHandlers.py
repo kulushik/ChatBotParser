@@ -36,7 +36,7 @@ async def event_command(message: types.Message, command: CommandObject):
 
 # Обрабатываем команду /start
 async def welcome(message: types.Message):
-    await message.answer_photo('AgACAgIAAxkDAAIBkmTkd6qjj21R2eiL_WgzLUYT70geAAK5yzEblYQoS_Aeb-xn-Zs4AQADAgADcwADMAQ', 'Йоу')
+    await message.answer_photo('AgACAgIAAxkBAAIPzWT1q-8bqxh0trAk87BvCHtch0rxAAINzDEbD-CxSwsdKruDaAABKAEAAwIAA3MAAzAE', 'Йоу')
     # await message.answer_photo(types.FSInputFile(r'img\statham.jpg'), 'Йоу')
     await help(message)
     await replace_keyboard(message, True)
@@ -123,7 +123,7 @@ async def day(message: types.Message):
                 kol_msg +=1
 
     if kol_msg <= 0:
-        await message.answer_photo('AgACAgIAAxkBAAIBomTkjeKcONYR6fiT1tO8S4J_hA-1AAJyzDEblYQoS2ubmFWfn8OIAQADAgADcwADMAQ', 'Староста разрешает сегодня не ходить😎')
+        await message.answer_photo('AgACAgIAAxkBAAIPz2T1rBQOuJlA4QTrS93IPvP0NRK7AAIPzDEbD-CxS8up9voh4FXUAQADAgADcwADMAQ', 'Староста разрешает сегодня не ходить😎')
         # await message.answer_photo(types.FSInputFile(r'img\today.jpg'), 'Староста разрешает сегодня не ходить😎')
 
 
@@ -156,6 +156,6 @@ async def week(message: types.Message):
 # Обрабатываем все входящие сообщения
 @userRout.message()
 async def echo(message: types.Message):
-    await message.answer_photo('AgACAgIAAxkDAAIBiGTkcMPDBofITTH3C-u3Nhet6KxvAALAyzEblYQoS5BHtx_E4tkdAQADAgADcwADMAQ', 'Зачем ты сюда пишешь? Держи обои на рабочий стол :)')
+    await message.answer_photo('AgACAgIAAxkBAAIP0WT1rDaARKe1yDQbb83bLVtH6H2EAAIQzDEbD-CxS-8Fu-K6d-g8AQADAgADcwADMAQ', 'Зачем ты сюда пишешь? Держи обои на рабочий стол :)')
     # photo = await message.answer_photo(types.FSInputFile(r'img\desktop.png'), 'Зачем ты сюда пишешь? Держи обои на рабочий стол :)')
     logging.info(f'Username: {message.from_user.username}, id: {message.from_user.id}, Имя: {message.from_user.full_name}: {message.text}')
