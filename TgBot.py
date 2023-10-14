@@ -7,6 +7,7 @@ from keyboards.MenuKeyboard import set_menu
 import Config
 import asyncio
 import logging
+import tzlocal
 from datetime import datetime, date, time
 import math
 
@@ -22,6 +23,17 @@ logger.addHandler(handler)
 
 # Инициализируем бота и диспетчер
 async def main():
+    # Создание планировщика
+    scheduler = AsyncIOScheduler(timezone=str(tzlocal.get_localzone()))
+    # Установка начального времени
+    interval = 4
+    date_time = datetime.now()
+    start_time = datetime.combine(date_time.date(), time(math.ceil(date_time.hour/interval)*interval))
+    # Установка параметров планировщика
+    scheduler.add_job(get_schedule_in_json, 'interval', hours=interval, start_date=start_time)
+    # Запуск планировщика
+    scheduler.start()
+
     session = AiohttpSession(proxy=Config.PROXY)
     bot = Bot(token=Config.TOKEN, session=session, parse_mode='HTML')
     dp = Dispatcher()
@@ -35,17 +47,6 @@ async def main():
 
 
 if __name__ == '__main__':
-    # Создание планировщика
-    scheduler = AsyncIOScheduler(timezone='Asia/Irkutsk')
-    # Установка начального времени
-    interval = 4
-    date_time = datetime.now()
-    start_time = datetime.combine(date_time.date(), time(math.ceil(date_time.hour/interval)*interval))
-    # Установка параметров планировщика
-    scheduler.add_job(get_schedule_in_json, 'interval', hours=interval, start_date=start_time)
-    # Запуск планировщика
-    scheduler.start()
-
     # Запуск бота
     asyncio.run(main())
     # dp.run_polling(bot)
