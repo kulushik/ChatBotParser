@@ -8,12 +8,13 @@ from .CallbackData import ChangeSheduleCallbackData
 from lexicon.Lexicon import weekday_names, short_weekday_names, list_settings, help_msg
 from logic.Parser import load_json
 from logic.Setting import get_settings, register
+import logic.Photo as Photo 
 from datetime import date
 
 userRout = Router()
 userRout.include_router(userCallbackRout)
 
-@userRout.message(Command(commands=['start', 'help', 'day', 'week', 'bagreport', 'setting', 'change']))
+@userRout.message(Command(commands=['start', 'help', 'day', 'week', 'bagreport', 'setting', 'change', 'keyboard']))
 async def event_command(message: types.Message, command: CommandObject):
     logging.info(f'Username: {message.from_user.username}, id: {message.from_user.id}, Имя: {message.from_user.full_name}: {message.text}')
     # command = message.text.split()[0]
@@ -32,12 +33,18 @@ async def event_command(message: types.Message, command: CommandObject):
         await setting(message)
     elif command.command == 'change':
         await change_shedule(message)
+    elif command.command == 'keyboard':
+        await replace_keyboard(message, True)
 
 
 # Обрабатываем команду /start
 async def welcome(message: types.Message):
-    await message.answer_photo('AgACAgIAAxkBAAIPzWT1q-8bqxh0trAk87BvCHtch0rxAAINzDEbD-CxSwsdKruDaAABKAEAAwIAA3MAAzAE', 'Йоу')
-    # await message.answer_photo(types.FSInputFile(r'img\statham.jpg'), 'Йоу')
+    try:
+        await message.answer_photo(Photo.get_photo(Photo.statham), 'Йоу')
+    except:
+        msg = await message.answer_photo(types.FSInputFile(r'img\statham.jpg'), 'Йоу')
+        Photo.set_photo(Photo.statham, msg.photo[0].file_id)
+    
     await help(message)
     await replace_keyboard(message, True)
 
@@ -123,8 +130,11 @@ async def day(message: types.Message):
                 kol_msg +=1
 
     if kol_msg <= 0:
-        await message.answer_photo('AgACAgIAAxkBAAIPz2T1rBQOuJlA4QTrS93IPvP0NRK7AAIPzDEbD-CxS8up9voh4FXUAQADAgADcwADMAQ', 'Староста разрешает сегодня не ходить😎')
-        # await message.answer_photo(types.FSInputFile(r'img\today.jpg'), 'Староста разрешает сегодня не ходить😎')
+        try:
+            await message.answer_photo(Photo.get_photo(Photo.today), 'Староста разрешает сегодня не ходить😎')
+        except:
+            msg = await message.answer_photo(types.FSInputFile(r'img\today.jpg'), 'Староста разрешает сегодня не ходить😎')
+            Photo.set_photo(Photo.statham, msg.photo[0].file_id)
 
 
 # Обрабатываем команду /week
@@ -156,6 +166,10 @@ async def week(message: types.Message):
 # Обрабатываем все входящие сообщения
 @userRout.message()
 async def echo(message: types.Message):
-    await message.answer_photo('AgACAgIAAxkBAAIP0WT1rDaARKe1yDQbb83bLVtH6H2EAAIQzDEbD-CxS-8Fu-K6d-g8AQADAgADcwADMAQ', 'Зачем ты сюда пишешь? Держи обои на рабочий стол :)')
-    # photo = await message.answer_photo(types.FSInputFile(r'img\desktop.png'), 'Зачем ты сюда пишешь? Держи обои на рабочий стол :)')
+    try:
+        await message.answer_photo(Photo.get_photo(Photo.desktop), 'Зачем ты сюда пишешь? Держи обои на рабочий стол :)')
+    except:
+        msg = await message.answer_photo(types.FSInputFile(r'img\desktop.png'), 'Зачем ты сюда пишешь? Держи обои на рабочий стол :)')
+        Photo.set_photo(Photo.statham, msg.photo[0].file_id)
+
     logging.info(f'Username: {message.from_user.username}, id: {message.from_user.id}, Имя: {message.from_user.full_name}: {message.text}')
