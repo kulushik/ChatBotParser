@@ -20,7 +20,7 @@ async def event_command(message: types.Message, command: CommandObject):
     # command = message.text.split()[0]
     if command.command == 'start':
         await welcome(message)
-        register(message.from_user.id, message.from_user.full_name, message.from_user.username)
+        # register(message.from_user.id, message.from_user.full_name, message.from_user.username)
     elif command.command == 'help':
         await help(message)
     elif command.command == 'day':

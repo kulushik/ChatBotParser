@@ -2,7 +2,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from aiogram.client.session.aiohttp import AiohttpSession
 from logic.Parser import get_schedule_in_json
 from aiogram import Bot, Dispatcher
-from handlers import AdminHandlers, UserHandlers
+from handlers import AdminHandlers, UserHandlers, OtherHandlers
 from keyboards.MenuKeyboard import set_menu
 import Config
 import asyncio
@@ -42,6 +42,7 @@ async def main():
 
     dp.include_router(AdminHandlers.adminRout)
     dp.include_router(UserHandlers.userRout)
+    dp.include_router(OtherHandlers.otherRout)
 
     await dp.start_polling(bot)
 

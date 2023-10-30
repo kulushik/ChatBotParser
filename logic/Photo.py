@@ -5,17 +5,17 @@ statham = 'statham'
 today = 'today'
 
 
-def get_photo(name_photo):
+def get_photo(name_photo: str):
     with open(r'data\photo.json', 'r', encoding='utf-8') as file:
         photos = json.load(file)
     return photos[name_photo]
 
-def set_photo(name_photo, id_photo):
+def set_photo(name_photo: str, id_photo: str):
     with open(r'data\photo.json', 'r', encoding='utf-8') as file:
         photos = json.load(file)
     
     photos[name_photo] = id_photo
 
-    with open(r'data\photo.json', 'r', encoding='utf-8') as file:
+    with open(r'data\photo.json', 'w', encoding='utf-8') as file:
         json.dump(photos, file, indent=4, ensure_ascii=False)
 
