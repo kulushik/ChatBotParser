@@ -67,10 +67,11 @@ def get_schedule_in_json():
                             'info':subject.find('div', class_='class-info').text.strip()
                             })
 
-            day_dict[name_day] = {
-                'date':date,
-                'pairs':list_subject
-                }
+            if list_subject:
+                day_dict[name_day] = {
+                    'date':date,
+                    'pairs':list_subject
+                    }
 
         with open(f'data\\{key}.json', 'w', encoding='utf-8') as f:
             json.dump(day_dict, f, indent=4, ensure_ascii=False)

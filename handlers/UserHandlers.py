@@ -134,7 +134,7 @@ async def day(message: types.Message):
             await message.answer_photo(Photo.get_photo(Photo.today), 'Староста разрешает сегодня не ходить😎')
         except:
             msg = await message.answer_photo(types.FSInputFile(r'img\today.jpg'), 'Староста разрешает сегодня не ходить😎')
-            Photo.set_photo(Photo.statham, msg.photo[0].file_id)
+            Photo.set_photo(Photo.today, msg.photo[0].file_id)
 
 
 # Обрабатываем команду /week
@@ -170,6 +170,6 @@ async def echo(message: types.Message):
         await message.answer_photo(Photo.get_photo(Photo.desktop), 'Зачем ты сюда пишешь? Держи обои на рабочий стол :)')
     except:
         msg = await message.answer_photo(types.FSInputFile(r'img\desktop.png'), 'Зачем ты сюда пишешь? Держи обои на рабочий стол :)')
-        Photo.set_photo(Photo.statham, msg.photo[0].file_id)
+        Photo.set_photo(Photo.desktop, msg.photo[0].file_id)
 
     logging.info(f'Username: {message.from_user.username}, id: {message.from_user.id}, Имя: {message.from_user.full_name}: {message.text}')
